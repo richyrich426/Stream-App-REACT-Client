@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {fetchStreams} from "../../actions";
 
@@ -7,10 +8,27 @@ class StreamList extends React.Component {
         this.props.fetchStreams();
     }
 
+    //display admin actions
+    renderAdmin(stream) {
+        if(stream.userId === this.props.currentUserId) {
+            return (
+                <div className={"right floated content"}>
+                    <button className={"ui button primary"}>
+                        Edit
+                    </button>
+                    <button className={"ui button negative"}>
+                        Delete
+                    </button>
+                </div>
+            )
+        }
+    }
+
     renderList() {
         return this.props.streams.map(stream => {
             return (
                 <div className={"item"} key={stream.id}>
+                    {this.renderAdmin(stream)}
                     <i className={"large middle aligned icon camera"}/>
                     <div className={"content"}>
                         {stream.title}
@@ -23,6 +41,19 @@ class StreamList extends React.Component {
         });
     }
 
+    // display the create stream action
+    renderCreate() {
+        if(this.props.isSignedIn) {
+            return (
+                <div style={{textAlign: 'right'}}>
+                    <Link to={"/stream/create"} className="ui primary button">
+                        Create Stream
+                    </Link>
+                </div>
+            )
+        }
+    }
+
     render() {
         return (
             <div>
@@ -30,6 +61,7 @@ class StreamList extends React.Component {
                 <div className={"ui celled list"}>
                     {this.renderList()}
                 </div>
+                {this.renderCreate()}
             </div>
         );
     }
@@ -37,7 +69,11 @@ class StreamList extends React.Component {
 
 const mapStateToProps = (state) => {
     // convert object keys to array
-    return {streams: Object.values(state.streams)};
+    return {
+        currentUserId: state.auth.userId,
+        isSignedIn: state.auth.isSignedIn,
+        streams: Object.values(state.streams)
+    };
 };
 
 export default connect(mapStateToProps, {
