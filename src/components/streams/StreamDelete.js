@@ -1,11 +1,13 @@
 import React from 'react';
+import Modal from '../Modal';
 
-const StreamList = () => {
+const StreamDelete = () => {
     return (
         <div>
-            Stream List
+            Stream Delete
+            <Modal />
         </div>
     )
 };
 
-export default StreamList;
+export default StreamDelete;
