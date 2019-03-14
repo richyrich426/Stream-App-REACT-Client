@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+
 import {connect} from "react-redux";
 import {fetchStreams} from "../../actions";
+import {Link} from 'react-router-dom';
 
 class StreamList extends React.Component {
     componentDidMount() {
@@ -35,7 +36,9 @@ class StreamList extends React.Component {
                     {this.renderAdmin(stream)}
                     <i className={"large middle aligned icon camera"}/>
                     <div className={"content"}>
-                        {stream.title}
+                         <Link to={`/streams/${stream.id}`} className={"header"}>
+                            {stream.title}
+                        </Link>
                         <div className={'description'}>
                             {stream.description}
                         </div>
